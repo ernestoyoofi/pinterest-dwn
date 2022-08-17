@@ -6,7 +6,7 @@ const port = process.env.PORT || 5000
 app.get("/", (req, res) => {
   res.sendFile(`${require("path").resolve()}/index.html`)
 })
-app.use("/assets/", express.static("assets"))
+app.use("/assets/", express.static(`${require("path").resolve()}/assets/`))
 app.get("/api/", (req, res) => {
   const url = req.query.url
   try {
