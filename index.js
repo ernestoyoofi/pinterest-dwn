@@ -33,6 +33,27 @@ app.get("/api/", (req, res) => {
   }
 })
 
+app.get("/api/media", (req, res) => {
+  const url = req.query.url
+  try {
+    if(!url) {
+      FormaterJSON(res, 400, {
+        message: "Please Put Your URL",
+        example: {
+          ex_1: `${Hostname(req)}/api/media?url=${encodeURIComponent("https://pin.it/twwDvEW")}`,
+          ex_2: `${Hostname(req)}/api/media?url=${encodeURIComponent("https://id.pinterest.com/pin/603834262554698583/")}`
+        }
+      })
+    } else {
+      Pinterest(url).then(part => {
+        res.redirect(part.preview.url)
+      })
+    }
+  } catch(err) {
+    res.status(500).send(err.stack)
+  }
+})
+
 function FormaterJSON(res, status, json) {
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('X-Powered-By', 'Vercel')
